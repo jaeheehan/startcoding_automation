@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 # 크롬 드라이버 자동 업데이트
 from webdriver_manager.chrome import ChromeDriverManager
@@ -30,8 +31,23 @@ browser.implicitly_wait(10) # 로딩이 끝날 때까지 10초까지는 기다�
 browser.find_element(By.CSS_SELECTOR, "#shortcutArea > ul > li:nth-child(4)").click()
 time.sleep(2)
 
+# 현재 탭 저장
+p = browser.current_window_handle
+
+# 열려있는 탭 조회
+chwd = browser.window_handles
+
+# 새로운 탭으로 이동
+for w in chwd:
+    if (w != p):
+        browser.switch_to.window(w)
+
 # 검색창을 클릭
-search = browser.find_element(By.CLASS_NAME, "_searchInput_search_text_3CUDs")
+search = browser.find_element(By.CSS_SELECTOR, "input._searchInput_search_text_3CUDs")
 search.click()
+
+# 검색어를 입력
+search.send_keys('아이폰 13')
+search.send_keys(Keys.ENTER)
 
 
