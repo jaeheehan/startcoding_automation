@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import time
 import pyautogui
 from openpyxl import Workbook
+from openpyxl.styles import Alignment
 
 # 사용자입력
 keyword = pyautogui.prompt("검색어를 입력하세요")
@@ -13,6 +14,11 @@ wb = Workbook()
 
 # 엑셀 시트 생성하기
 ws = wb.create_sheet(keyword)
+
+# 열 너비 조절
+ws.column_dimensions["A"].width = 60
+ws.column_dimensions["B"].width = 60
+ws.column_dimensions["C"].width = 120
 
 # 행번호
 row = 1
@@ -58,6 +64,9 @@ for i in range(1,lastpage * 10, 10):
             ws[f'A{row}'] = url
             ws[f'B{row}'] = title.text.strip()
             ws[f'C{row}'] = content.text.strip()
+            # 자동 줄바꿈
+            ws[f'C{row}'].alignment = Alignment(wrap_text=True)
+
             row = row + 1
 
             time.sleep(0.3)
