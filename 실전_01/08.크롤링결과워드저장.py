@@ -1,3 +1,4 @@
+# pip install python-docx 설치
 import requests
 from bs4 import BeautifulSoup
 import time
