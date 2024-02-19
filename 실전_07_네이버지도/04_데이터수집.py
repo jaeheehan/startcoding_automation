@@ -9,6 +9,14 @@ from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
 
 import time
+import pyautogui
+import openpyxl
+
+keyword = pyautogui.prompt("검색어를 입력하세요")
+
+wb = openpyxl.Workbook()
+ws = wb.create_sheet(keyword)
+ws.append(["순위", "이름", "별점", "리뷰"])
 
 # 브라우저 꺼짐 방지
 chrome_options = Options()
@@ -29,7 +37,7 @@ browser.get("https://map.naver.com/p?c=15.00,0,0,0,dh")
 search = browser.find_element(By.CSS_SELECTOR, "input.input_search")
 search.click()
 time.sleep(1)
-search.send_keys("강남역 맛집")
+search.send_keys(keyword)
 time.sleep(1)
 search.send_keys(Keys.ENTER)
 time.sleep(2)
@@ -61,20 +69,22 @@ while True:
         break
     before_len = after_len
 
-for li in lis:
-    # 가게명
-    name = li.find_element(By.CSS_SELECTOR, "span.TYaxT")
-    print(name.text)
 
-# 가게 이름 10개 가져오기
-# names = browser.find_elements(By.CSS_SELECTOR, "span.TYaxT")
-# for name in names:
-#     print(name.text)
-#
-# time.sleep(2)
+for i,li in enumerate(lis):
+    # 가게명
+    name = li.find_element(By.CSS_SELECTOR, "span.TYaxT").text
+    # 별점
+    star = li.find_element(By.CSS_SELECTOR, "span.orXYY").text
+    # 리뷰
+    review = li.find_element(By.CSS_SELECTOR, "div.MVx6e > span:nth-child(3)").text
+
+    print(name, star.replace('별점', '').strip(), review.replace('리뷰', '').strip())
+    ws.append([i+1, name, star.replace('별점', '').strip(), review.replace('리뷰', '').strip()])
+
 
 # iframe 밖으로 나오기
 browser.switch_to.default_content()
 
+wb.save(f"{keyword}.xlsx")
 
 
