@@ -30,7 +30,7 @@ driver.get("https://nid.naver.com/nidlogin.login?mode=form&url=https://www.naver
 # 아이디 입력창
 id = driver.find_element(By.CSS_SELECTOR, "#id")
 id.click()
-pyperclip.copy("sprspre")
+pyperclip.copy("")
 pyautogui.keyDown('command')
 pyautogui.press('v')
 pyautogui.keyUp('command')
@@ -39,7 +39,7 @@ time.sleep(2)
 # 비밀번호 입력창
 pw = driver.find_element(By.CSS_SELECTOR, "#pw")
 pw.click()
-pyperclip.copy("!Naver12#")
+pyperclip.copy("")
 pyautogui.keyDown('command')
 pyautogui.press('v')
 pyautogui.keyUp('command')
